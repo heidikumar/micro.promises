@@ -8,7 +8,19 @@ var Promise = require('bluebird');
 // build out `getFromAPIAndWriteToFile` to hit an API's GET request endpoint,
 // and write the body of its response to a file whose path is passed in
 var getFromAPIAndWriteToFile = function (apiURL, writeFilePath) {
-  // YOUR CODE HERE
+  return new Promise(function(resolve, reject){
+	  request(apiURL, function(err, response){
+	  	if (err){ reject(err); }
+	  	else {
+	  		resolve(response);
+	  	}
+	  })
+	})
+  	.then(function(info){
+  		fs.writeFile(writeFilePath, info, function(err){
+  			if (err) {reject(err);}
+  		})
+  	});
 };
 
 module.exports = getFromAPIAndWriteToFile;
