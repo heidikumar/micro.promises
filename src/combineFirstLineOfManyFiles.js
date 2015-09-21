@@ -2,6 +2,8 @@
 
 var fs = require('fs');
 var Promise = require('bluebird');
+var readFile = require('./readFileWithPromise.js');
+var pluckLine = require('./pluckFirstLineFromFile.js');
 
 /**
  * Using Promise.all, write a function, combineFirstLineOfManyFiles, that:
@@ -22,7 +24,19 @@ var Promise = require('bluebird');
  */
 
 var combineFirstLineOfManyFiles = function (filePaths, writePath) {
-  // YOUR CODE HERE
+
+	return Promise.all([
+			pluckLine(filePaths[0]),
+			pluckLine(filePaths[1]),
+			pluckLine(filePaths[2])
+			])
+	.then(function(output){
+		return output.join('\n');
+	})
+	.then(function(line){
+		fs.writeFile(writePath, line);
+	});
+
 };
 
 module.exports = combineFirstLineOfManyFiles;
